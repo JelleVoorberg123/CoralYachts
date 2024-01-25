@@ -141,7 +141,14 @@
          echo '<script> console.log(-' .$sql. '); </script>';
          $result = $conn->query($sql);
 
-         
+         if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            // output data of each row
+            while($row = $result->fetch_assoc()) {
+               $text = "Naam: " . $row["naam"]. "  - Plek: " . $row["plek"]. "  - Beschikbaar: " . $row["beschikbaar"]. "  - Kosten: " . $row["kosten"]. "<br>";
+               echo '<script> document.getElementById("php").innerHTML = "' .$text. '"; </script>';
+            }
+        }
       ?>
       <!--  footer -->
       <footer>
