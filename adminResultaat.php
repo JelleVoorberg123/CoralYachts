@@ -97,7 +97,7 @@
                </div>
                
                <div class="col-sm-12">
-                  <button class="find_btn">Gaan</button>
+                  <button class="find_btn">-- Gaan --</button>
                </div>
             </div>
          </table>
