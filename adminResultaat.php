@@ -73,40 +73,88 @@
          </div>
       </header>
       <!-- end header inner -->
-      <h6 id="php">werkt niet</h6>
+      <!-- <form action="admin.php" method="get">
+         <div>
+            <h6 id="1"></h6>
+            <h6 id="2"></h6>
+            <h6 id="3"></h6>
+            <h6 id="4"></h6>
+
+            <button>Maak aanpassing</button>
+         </div>
+      </form> -->
+
+      <form class="main_form" action="admin.php" method="get">
+         <table>
+            <div class="row">
+               <h1>Bij "NIET INVULLEN" zet een "-" neer.</h1>
+               
+               <div class="col-md-12 ">
+                  <h6 id="1"></h6> <input type='text' name='naamNew' required>
+                  <h6 id="2"></h6> <input type='text' name='plekNew' required>
+                  <h6 id="3"></h6> <input type='text' name='beschikbaarNew' required> 
+                  <h6 id="4"></h6> <input type='text' name='kostenNew' required> <br> <br>
+               </div>
+               
+               <div class="col-sm-12">
+                  <button class="find_btn">Gaan</button>
+               </div>
+            </div>
+         </table>
+      </form>
 
       <?php 
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $dbname = "coralyachts";
+         $servername = "localhost";
+         $username = "root";
+         $password = "";
+         $dbname = "coralyachts";
 
-        // Create connection
-        $conn = new mysqli($servername, $username, $password, $dbname);
+         // Create connection
+         $conn = new mysqli($servername, $username, $password, $dbname);
 
-        // Check connection
-        if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-        } else { echo '<script> console.log("Connectie met database 100%"); </script>'; }
+         // Check connection
+         if ($conn->connect_error) {
+         die("Connection failed: " . $conn->connect_error);
+         } else { echo '<script> console.log("Connectie met database 100%"); </script>'; }
 
-        $wat = $_GET["wat"]; echo '<script> console.log("wat = '.$wat.'"); </script>';
-        $type = $_GET["type"]; echo '<script> console.log("type = '.$type.'"); </script>';
-        ?><br><?php
-        $sql = "SELECT * FROM `boten` WHERE naam='" .$type. "'";
-        echo '<script> console.log(-' .$sql. '); </script>';
-        $result = $conn->query($sql);
+         $wat = $_GET["wat"]; echo '<script> console.log("wat = '.$wat.'"); </script>';
+         $type = $_GET["naam"]; echo '<script> console.log("type = '.$type.'"); </script>';
+         ?><br><?php
 
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            // output data of each row
-            while($row = $result->fetch_assoc()) {
-               $text = "Naam: " . $row["naam"]. "  - Plek: " . $row["plek"]. "  - Beschikbaar: " . $row["beschikbaar"]. "  - Kosten: " . $row["kosten"]. "<br>";
-               echo '<script> document.getElementById("php").innerHTML = "' .$text. '"; </script>';
-            }
-        }
-
-        $conn->close();
+         $conn->close();
       ?>
+
+      <script>
+         var r = window.location.search;
+         var vraag = "-";
+         
+         if (r.includes("plaats")) { // checkt optie is aangeklikt
+            document.getElementById("1").innerHTML = "naam:";
+            document.getElementById("2").innerHTML = "plek:";
+            document.getElementById("3").innerHTML = "NIET INVULLEN";
+            document.getElementById("4").innerHTML = "NIET INVULLEN";
+            vraag = "plaats";
+         } else if (r.includes("beschikbaar")) {
+            document.getElementById("1").innerHTML = "naam:";
+            document.getElementById("2").innerHTML = "NIET INVULLEN";
+            document.getElementById("3").innerHTML = "beschikbaar:";
+            document.getElementById("4").innerHTML = "NIET INVULLEN";
+            vraag = "beschikbaar";
+         } else if (r.includes("toevoegen")) {
+            document.getElementById("1").innerHTML = "naam:";
+            document.getElementById("2").innerHTML = "plek:";
+            document.getElementById("3").innerHTML = "beschikbaar:";
+            document.getElementById("4").innerHTML = "kosten:";
+            vraag = "toevoegen";
+         } else if (r.includes("verwijderen")) {
+            document.getElementById("1").innerHTML = "naam:";
+            document.getElementById("2").innerHTML = "NIET INVULLEN:";
+            document.getElementById("3").innerHTML = "NIET INVULLEN:";
+            document.getElementById("4").innerHTML = "NIET INVULLEN:";
+            vraag = "verwijderen";
+         }
+      </script>
+      
       <!--  footer -->
       <footer>
          <div class="footer">

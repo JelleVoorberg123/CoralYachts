@@ -87,7 +87,7 @@
                         <form class="main_form" action="adminResultaat.php" method="get">
                            <table>
                               <div class="titlepage">
-                                 <h2>Kies hier wat u met een boot wilt doen.</h2>
+                                 <h2>Kies hier wat u wilt doen.</h2>
                               </div>
                               <div class="row">
                                  <div class="col-md-12 ">
@@ -123,6 +123,7 @@
          </div>
 
       </div>
+
       <?php 
          $servername = "localhost";
          $username = "root";
@@ -137,18 +138,27 @@
          die("Connection failed: " . $conn->connect_error);
          } else { echo '<script> console.log("Connectie met database 100%"); </script>'; }
 
-         $sql = "SELECT * FROM `boten` WHERE naam='" .$type. "'";
+         $naam = $_GET["naamNew"]; echo '<script> console.log("naam = '.$naam.'"); </script>';
+         $plek= $_GET["plekNew"]; echo '<script> console.log("plek = '.$plek.'"); </script>';
+         $beschikbaar = $_GET["beschikbaarNew"]; echo '<script> console.log("beschikbaar = '.$beschikbaar.'"); </script>';
+         $kosten = $_GET["kostenNew"]; echo '<script> console.log("kosten = '.$kosten.'"); </script>';
+
+         if ($naam != null  && $plek != null  && $beschikbaar == "-" && $kosten == "-") { // plek aanpassen
+            echo '<script> console.log("actie: plaats aanpassen"); </script>';
+            $sql = "UPDATE `boten` SET `plek`='".$plek."' WHERE `naam`='".$naam."';";
+         } else if ($naam != null  && $plek == "-"  && $beschikbaar != null && $kosten == "-") { // beschikbaarheid aanpassen
+            echo '<script> console.log("actie: beschikbaarheid aanpassen"); </script>';
+            $sql = "UPDATE `boten` SET `beschikbaar`='".$beschikbaar."' WHERE `naam`='".$naam."';";
+         } else if ($naam != null  && $plek != null  && $beschikbaar != null && $kosten != null) { // toevoegen
+            echo '<script> console.log("actie: toevoegen"); </script>';
+            $sql = "INSERT INTO `boten`(`naam`, `plek`, `beschikbaar`, `kosten`) VALUES ('".$naam."','".$plek."','".$beschikbaar."','".$kosten."');";
+         } else if ($naam != null  && $plek == "-"  && $beschikbaar == "-" && $kosten == "-") { // verwijderen
+            echo '<script> console.log("actie: verwijderen"); </script>';
+            $sql = "DELETE FROM boten WHERE naam='".$naam."';";
+         }
+
          echo '<script> console.log(-' .$sql. '); </script>';
          $result = $conn->query($sql);
-
-         if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            // output data of each row
-            while($row = $result->fetch_assoc()) {
-               $text = "Naam: " . $row["naam"]. "  - Plek: " . $row["plek"]. "  - Beschikbaar: " . $row["beschikbaar"]. "  - Kosten: " . $row["kosten"]. "<br>";
-               echo '<script> document.getElementById("php").innerHTML = "' .$text. '"; </script>';
-            }
-        }
       ?>
       <!--  footer -->
       <footer>
